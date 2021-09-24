@@ -5,9 +5,15 @@ var repoNameEl = document.querySelector("#repo-name");
 var getRepoName = function() {
     var queryString = document.location.search;
     var repoName = queryString.split("=")[1];
-    getRepoIssues(repoName);
-    repoNameEl.textContent = repoName;
-}
+    //check that there is a valid repo name
+    if(repoName) {
+        repoNameEl.textContent = repoName;
+        getRepoIssues(repoName);
+    }
+    else {
+        document.location.replace("./index.html");
+    }
+};
 
 var getRepoIssues = function(repo) {
     // format the github api url
@@ -27,7 +33,8 @@ var getRepoIssues = function(repo) {
                     }
                 });
             } else {
-                alert('Error: GitHub Repo Not Found');
+                // if not successful, redirect to homepage
+                document.location.replace("./index.html");
             }
         })
         .catch(function (error) {
